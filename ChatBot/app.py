@@ -10,9 +10,6 @@ from langchain.schema import (
     HumanMessage,
     AIMessage
 )
-#khởi tạo biến môi trường
-os.environ['AZURE_OPENAI_API_KEY'] = '5851fc1d0e804578933d413f593422f1'
-os.environ['AZURE_OPENAI_ENDPOINT'] = 'https://sunhackathon17.openai.azure.com/'
 #khởi tạo llm instance
 llm = LLM()
 #code api

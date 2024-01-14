@@ -12,15 +12,6 @@ from langchain_core.messages import HumanMessage
 from dotenv import load_dotenv
 load_dotenv()
 
-# os.environ['AZURE_OPENAI_API_KEY'] = '5851fc1d0e804578933d413f593422f1'
-# os.environ['AZURE_OPENAI_ENDPOINT'] = 'https://sunhackathon17.openai.azure.com/'
-# os.environ['ELASTIC_CLOUD_ID'] = 'd382c337ef9343fdb3797e3e4b7e4650:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvOjQ0MyQ0MTAzOGU0NWEyODg0MmFkYjM5ZjE3ZjNlMDE4Yjk5ZiRiNjYxNDY2NjVhMmU0MDNhOTkyMjNhZDNiNDMzZTU4Mg=='
-# os.environ['ELASTIC_API_KEY'] = 'dzBGcUE0MEI1U3JYQUkxdUI0elY6Y2tyZHlMejhSODZiVUlmNEpkczY4UQ=='
-# os.environ['API_VERSION'] = '2023-05-15'
-# os.environ['API_EMBEDDING_DEPLOY_NAME'] = 'ADA'
-# os.environ['API_CHAT_DEPLOY_NAME'] = 'GPT35TURBO16K'
-# os.environ['INDEX_NAME'] = 'grammar_n3'
-
 class LLM():
     def __init__(self):
         
@@ -149,7 +140,6 @@ class LLM():
 if __name__ == "__main__":
     llm = LLM()
     while True:
-        
         message = input("User: ")
         res = llm.chat(message)
         print('Bot: ', res)
