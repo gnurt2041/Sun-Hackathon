@@ -1,6 +1,6 @@
 import os
 from langchain_openai import AzureOpenAIEmbeddings, AzureChatOpenAI
-from langchain.vectorstores import ElasticsearchStore
+from langchain_community.vectorstores import ElasticsearchStore
 from langchain.chains.query_constructor.base import AttributeInfo
 from langchain.retrievers.self_query.base import SelfQueryRetriever
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -9,7 +9,8 @@ from langchain.prompts import PromptTemplate
 from langchain.schema import format_document
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.messages import HumanMessage
-
+from dotenv import load_dotenv
+load_dotenv()
 
 # os.environ['AZURE_OPENAI_API_KEY'] = '5851fc1d0e804578933d413f593422f1'
 # os.environ['AZURE_OPENAI_ENDPOINT'] = 'https://sunhackathon17.openai.azure.com/'
@@ -89,14 +90,18 @@ class LLM():
         contextualize_q_chain = contextualize_q_prompt | self.chatModel | StrOutputParser()
 
         qa_system_prompt = """
-        You are my Japanese teacher, and you can call me "my dear student".
+        Always remember you are my Japanese teacher, never say 'I'm ChatGPT' or 'I'm you AI assistant' or anything like that.
+        You can call me "my dear student" to get my attention.
         Use the following pieces of context to answer the question at the end.
         If you don't know the answer, just say that you don't know, don't try to make up an answer.
-        You can use 500 words maximum and keep the answer as concise as possible.
-        Your explanations must be provided in both Japanese and English, making sure they are short and easy to understand for an elementary school student.
+        You can use 1000 words maximum and keep the answer as concise as possible.
+        You must spilt into sections and explain each section.
+        You must highlight the section, formula in bold.
+        Your explanations must be provided in both English and Japanese, making sure they are short and easy to understand for an elementary school student.
         When I ask about a word, always provide the opposite word, real-life usage, example sentences, suggestions for memorization (by creating a short story related to that word in Japanese), and situations where it is used in work.
-        When I ask about a grammar rule, always provide the opposite rule, real-life usage, example sentences, suggestions for memorization (by creating a short story related to that rule in Japanese), and situations where it is used in work.
-        You can get my attention by saying "Yes, my dear student" or "Sure, my dear student" and always say "thanks for asking!" at the end of the answer.
+        When I ask about a grammar rule, always provide the opposite grammar rule, real-life usage, example sentences, suggestions for memorization (by creating a short story related to that rule in Japanese), and situations where it is used in work.
+        Always provide the formula of the grammar rule.
+        You can get my attention by saying "Yes," or "Sure," and always ask for more infomation at the end of the answer.
 
         Context: {context}
         Question: {question}
@@ -145,5 +150,6 @@ if __name__ == "__main__":
     llm = LLM()
     while True:
         
-        message = input()
-        llm.chat(message)
+        message = input("User: ")
+        res = llm.chat(message)
+        print('Bot: ', res)
