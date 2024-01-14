@@ -24,7 +24,7 @@ Install the requirements packages
 pip install -r requirements.txt
 ```
 
-Reference [.env](https://github.com/gnurt2041/Sun-Hackathon/Chatbot/.env) to create `.env` file
+Reference [config.sh](https://github.com/gnurt2041/Sun-Hackathon/blob/main/ChatBot/config.sh) to create `config.sh` file
 ```python
 AZURE_OPENAI_API_KEY = "YOUR_AZURE_OPENAI_API_KEY"
 AZURE_OPENAI_ENDPOINT = "YOUR_AZURE_OPENAI_ENDPOINT"
