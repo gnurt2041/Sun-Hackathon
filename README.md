@@ -21,6 +21,7 @@ git clone https://github.com/gnurt2041/Sun-Hackathon.git
 
 Install the requirements packages
 ```python
+cd Chatbot
 pip install -r requirements.txt
 ```
 
@@ -39,7 +40,6 @@ export INDEX_NAME = "YOUR_INDEX_NAME"
 Run app in local host
 
 ```python
-cd Chatbot
 python app.py
 ```
 
