@@ -21,7 +21,7 @@ git clone https://github.com/gnurt2041/Sun-Hackathon.git
 
 Install the requirements packages
 ```python
-cd Chatbot
+cd ChatBot
 pip install -r requirements.txt
 ```
 
