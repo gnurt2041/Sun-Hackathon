@@ -45,4 +45,4 @@ python app.py
 
 # 📝 Credits
 
-The LangChain  Chatbot was developed by [Gnurt2041](https://github.com/gnurt2041), [Minhquan129](https://github.com/Minhquan129) and [Omnihs1](https://github.com/Omnihs1) with much inspiration from [ELSA Speak]([https://twitter.com/mayowaoshin](https://vn.elsaspeak.com/en/homepage/)) with the [LangChain Q&A with RAG ](https://python.langchain.com/docs/use_cases/question_answering/) for PDF docs and content from web page.
+The LangChain  Chatbot was developed by [Gnurt2041](https://github.com/gnurt2041), [Minhquan129](https://github.com/Minhquan129) and [Omnihs1](https://github.com/Omnihs1) with much inspiration from [ELSA Speak](https://vn.elsaspeak.com/en/homepage/) with the [LangChain Q&A with RAG ](https://python.langchain.com/docs/use_cases/question_answering/) for PDF docs and content from web page.
