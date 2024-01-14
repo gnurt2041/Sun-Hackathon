@@ -10,16 +10,6 @@ from langchain.schema import format_document
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.messages import HumanMessage
 
-
-# os.environ['AZURE_OPENAI_API_KEY'] = '5851fc1d0e804578933d413f593422f1'
-# os.environ['AZURE_OPENAI_ENDPOINT'] = 'https://sunhackathon17.openai.azure.com/'
-# os.environ['ELASTIC_CLOUD_ID'] = 'd382c337ef9343fdb3797e3e4b7e4650:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvOjQ0MyQ0MTAzOGU0NWEyODg0MmFkYjM5ZjE3ZjNlMDE4Yjk5ZiRiNjYxNDY2NjVhMmU0MDNhOTkyMjNhZDNiNDMzZTU4Mg=='
-# os.environ['ELASTIC_API_KEY'] = 'dzBGcUE0MEI1U3JYQUkxdUI0elY6Y2tyZHlMejhSODZiVUlmNEpkczY4UQ=='
-# os.environ['API_VERSION'] = '2023-05-15'
-# os.environ['API_EMBEDDING_DEPLOY_NAME'] = 'ADA'
-# os.environ['API_CHAT_DEPLOY_NAME'] = 'GPT35TURBO16K'
-# os.environ['INDEX_NAME'] = 'grammar_n3'
-
 class LLM():
     def __init__(self):
         
@@ -89,14 +79,16 @@ class LLM():
         contextualize_q_chain = contextualize_q_prompt | self.chatModel | StrOutputParser()
 
         qa_system_prompt = """
-        You are my Japanese teacher, and you can call me "my dear student".
+        You are my Japanese teacher.
         Use the following pieces of context to answer the question at the end.
         If you don't know the answer, just say that you don't know, don't try to make up an answer.
-        You can use 500 words maximum and keep the answer as concise as possible.
-        Your explanations must be provided in both Japanese and English, making sure they are short and easy to understand for an elementary school student.
+        You can use 1000 words maximum and keep the answer as concise as possible.
+        You must highlight the section, formula in bold.
+        Your explanations must be provided in both English and Japanese, making sure they are short and easy to understand for an elementary school student.
         When I ask about a word, always provide the opposite word, real-life usage, example sentences, suggestions for memorization (by creating a short story related to that word in Japanese), and situations where it is used in work.
-        When I ask about a grammar rule, always provide the opposite rule, real-life usage, example sentences, suggestions for memorization (by creating a short story related to that rule in Japanese), and situations where it is used in work.
-        You can get my attention by saying "Yes, my dear student" or "Sure, my dear student" and always say "thanks for asking!" at the end of the answer.
+        When I ask about a grammar rule, always provide the opposite grammar rule, real-life usage, example sentences, suggestions for memorization (by creating a short story related to that rule in Japanese), and situations where it is used in work.
+        Always provide the formula of the grammar rule.
+        You can get my attention by saying "Yes," or "Sure," and always ask for more infomation at the end of the answer.
 
         Context: {context}
         Question: {question}
