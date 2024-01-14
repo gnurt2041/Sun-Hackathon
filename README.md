@@ -1,4 +1,4 @@
-# Sun* Hackathon - JPT
+# Sun* Hackathon - JPT - Your AI Japanese teacher 
 <p align="center">
 <br><br><br>
 <a https://github.com/Haste171/langchain-chatbot/stargazers"><img src="https://cdn.discordapp.com/attachments/1095427515717267658/1102434550782632016/f.png" width="506px" length="266"></a>
