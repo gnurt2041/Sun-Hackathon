@@ -44,21 +44,43 @@
 		</div>
 		<script id="worker" type="javascript/worker">
 			self.addEventListener('message', function(event) {
-			  var text = event.data.text;
-			  var speed = event.data.speed;
-			  var i = 0;
-		  
-			  function typeWriter() {
-				if (i < text.length) {
-				  // Send the next character back to the main thread
-				  self.postMessage(text.charAt(i));
-				  i++;
-				  setTimeout(typeWriter, speed);
+				var text = event.data.text;
+				var speed = event.data.speed;
+				var i = 0;
+			
+				function typeWriter() {
+					if (i < text.length) {
+						// Check if the current character is the start of a bold tag
+						if (text.charAt(i) === '*' && text.charAt(i + 1) === '*') {
+							// Find the closing '**' to determine the bold text
+							var endIdx = text.indexOf('**', i + 2);
+							if (endIdx !== -1) {
+								// Extract the bold text and wrap it in <strong> tags
+								var boldText = text.substring(i + 2, endIdx);
+								self.postMessage({ type: 'bold', content: boldText });
+								i = endIdx + 2; // Skip the closing '**'
+							} else {
+								// If closing '**' is not found, treat '*' as a regular character
+								self.postMessage({ type: 'text', content: '*' });
+								i++;
+							}
+						} else if (text.charAt(i) === '\n') {
+							// Handle newline characters
+							self.postMessage({ type: 'newline' });
+							i++;
+						} else {
+							// If the character is not '*' or '\n', proceed normally
+							self.postMessage({ type: 'text', content: text.charAt(i) });
+							i++;
+						}
+						setTimeout(typeWriter, speed);
+					}
 				}
-			  }
-		  
-			  typeWriter();
+			
+				typeWriter();
 			});
+			
+			
 		</script>
 
 		<script>
@@ -67,7 +89,8 @@
 				$("#messageArea").on("submit", function(event) {
 					const date = new Date();
 					const hour = date.getHours();
-					const minute = date.getMinutes();
+					let minute = date.getMinutes(); // Declare minute as a let variable
+					minute = minute < 10 ? '0' + minute : minute;
 					const str_time = hour+":"+minute;
 					var rawText = $("#text").val();
 
@@ -87,7 +110,7 @@
 						type: "POST",
 						url: "/get",
 					}).done(function(data) {
-						data = data.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Replace "**" with <strong> tag
+						// data = data.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Replace "**" with <strong> tag
 						var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://i.ibb.co/fSNP7Rz/icons8-chatgpt-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer"><pre></pre><span class="msg_time">' + str_time + '</span></div></div>';
 						$("#messageFormeight").append($.parseHTML(botHtml));
 						var msgContainers = document.getElementsByClassName('msg_cotainer');
@@ -118,11 +141,18 @@
 
 						// Listen for messages from the worker
 						worker.addEventListener('message', function(event) {
-						// Update the text of the chat message with the next character
-						preElement.innerHTML += event.data;
-						if (isScrolledToBottom) {
-							msgCardBody.scrollTop = msgCardBody.scrollHeight;
-						}
+							var messageType = event.data.type;
+							var messageContent = event.data.content;
+							if (messageType === 'bold') {
+								messageContent = '<strong>' + messageContent + '</strong>';
+							} else if (messageType === 'newline') {
+								messageContent = '<br>';
+							}
+							preElement.innerHTML += messageContent;
+							// Scroll to the bottom of the message box
+							if (isScrolledToBottom) {
+								msgCardBody.scrollTop = msgCardBody.scrollHeight;
+							}
 						});
 
 						// Start the typewriter animation
