@@ -16,7 +16,7 @@ body,html{
 	margin-right: 5px;
 }
 .card{
-	height: 80vh;
+	height: 90vh;
 	width: 76vw;
 	border-radius: 15px !important;
 	background-color: rgba(0,0,0,0.4) !important;
@@ -149,7 +149,7 @@ border-radius: 0 0 15px 15px !important;
 	margin-right: 20px;
 }
 .msg_cotainer{
-	max-width: 60%;
+	max-width: 50%;
 	margin-top: auto;
 	margin-bottom: auto;
 	margin-left: 10px;
@@ -158,6 +158,10 @@ border-radius: 0 0 15px 15px !important;
 	padding: 10px;
 	position: relative;
 }
+@keyframes typewriter {
+	0% { width: 0; }
+	100% { width: max-content; }
+  }
 .msg_cotainer_send{
 	margin-top: auto;
 	margin-bottom: auto;

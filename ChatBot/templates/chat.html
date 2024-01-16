@@ -42,8 +42,27 @@
 				</div>
 			</div>
 		</div>
-		
+		<script id="worker" type="javascript/worker">
+			self.addEventListener('message', function(event) {
+			  var text = event.data.text;
+			  var speed = event.data.speed;
+			  var i = 0;
+		  
+			  function typeWriter() {
+				if (i < text.length) {
+				  // Send the next character back to the main thread
+				  self.postMessage(text.charAt(i));
+				  i++;
+				  setTimeout(typeWriter, speed);
+				}
+			  }
+		  
+			  typeWriter();
+			});
+		</script>
+
 		<script>
+			
 			$(document).ready(function() {
 				$("#messageArea").on("submit", function(event) {
 					const date = new Date();
@@ -57,6 +76,10 @@
 					$("#text").val("");
 					$("#messageFormeight").append(userHtml);
 
+					// Scroll to the bottom of the message box
+					var msgCardBody = document.querySelector('.msg_card_body');
+					msgCardBody.scrollTop = msgCardBody.scrollHeight;
+
 					$.ajax({
 						data: {
 							msg: rawText,	
@@ -65,8 +88,45 @@
 						url: "/get",
 					}).done(function(data) {
 						data = data.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Replace "**" with <strong> tag
-						var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://i.ibb.co/fSNP7Rz/icons8-chatgpt-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer"><pre>' + data + '</pre><span class="msg_time">' + str_time + '</span></div></div>';
+						var botHtml = '<div class="d-flex justify-content-start mb-4"><div class="img_cont_msg"><img src="https://i.ibb.co/fSNP7Rz/icons8-chatgpt-512.png" class="rounded-circle user_img_msg"></div><div class="msg_cotainer"><pre></pre><span class="msg_time">' + str_time + '</span></div></div>';
 						$("#messageFormeight").append($.parseHTML(botHtml));
+						var msgContainers = document.getElementsByClassName('msg_cotainer');
+						var lastMsgContainer = msgContainers[msgContainers.length - 1];
+						var preElement = lastMsgContainer.getElementsByTagName('pre')[0];
+						var i = 0;
+						var speed = 10; // Speed of the typewriter effect in milliseconds
+
+						var msgCardBody = document.querySelector('.msg_card_body');
+						var isScrolledToBottom = msgCardBody.scrollHeight - msgCardBody.clientHeight <= msgCardBody.scrollTop + 1;
+
+						// Update isScrolledToBottom when the user scrolls
+						msgCardBody.addEventListener('scroll', function() {
+						isScrolledToBottom = msgCardBody.scrollHeight - msgCardBody.clientHeight <= msgCardBody.scrollTop + 1;
+						});
+
+						// Get the worker script as a string
+						var workerScript = document.querySelector('#worker').textContent;
+
+						// Create a Blob from the worker script
+						var blob = new Blob([workerScript], { type: 'text/javascript' });
+
+						// Create a Blob URL from the Blob
+						var blobURL = URL.createObjectURL(blob);
+
+						// Create a new Web Worker from the Blob URL
+						var worker = new Worker(blobURL);
+
+						// Listen for messages from the worker
+						worker.addEventListener('message', function(event) {
+						// Update the text of the chat message with the next character
+						preElement.innerHTML += event.data;
+						if (isScrolledToBottom) {
+							msgCardBody.scrollTop = msgCardBody.scrollHeight;
+						}
+						});
+
+						// Start the typewriter animation
+						worker.postMessage({ text: data, speed: speed });
 					});
 					event.preventDefault();
 				});

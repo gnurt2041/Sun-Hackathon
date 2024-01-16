@@ -1,4 +1,5 @@
 import os
+from time import sleep
 from langchain_openai import AzureOpenAIEmbeddings, AzureChatOpenAI
 from langchain_community.vectorstores import ElasticsearchStore
 from langchain.chains.query_constructor.base import AttributeInfo
@@ -8,7 +9,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain.prompts import PromptTemplate
 from langchain.schema import format_document
 from langchain_core.runnables import RunnablePassthrough
-from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage, AIMessage
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -138,9 +139,20 @@ class LLM():
         ai_msg = self.rag_chain.invoke({"question": message, "chat_history": self.chat_history})
         self.chat_history.extend([HumanMessage(content=message), ai_msg])
         return ai_msg.content
+    
+    def stream(self, message):
+        output = ''
+        for chunk in self.rag_chain.stream({"question": message, "chat_history": self.chat_history}):
+            sleep(0.05)
+            yield(f"{chunk.content}")
+            output += chunk.content
+        ai_msg = AIMessage(content=output)
+        self.chat_history.extend([HumanMessage(content=message), ai_msg])
 if __name__ == "__main__":
     llm = LLM()
     while True:
         message = input("User: ")
-        res = llm.chat(message)
-        print('Bot: ', res)
+        print('Bot: ', end='')
+        for res in llm.stream(message):
+            print(res, end='', flush=True)
+        print('\n')
