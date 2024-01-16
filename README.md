@@ -1,7 +1,7 @@
 # Sun* Hackathon - JPT - Your AI Japanese teacher 
 <p align="center">
 <br><br><br>
-<a https://github.com/Haste171/langchain-chatbot/stargazers"><img src="https://cdn.discordapp.com/attachments/1095427515717267658/1102434550782632016/f.png" width="506px" length="266"></a>
+<a https://github.com/Haste171/langchain-chatbot/stargazers"><img src="https://cdn.discordapp.com/attachments/1095427515717267658/1102434550782632016/f.png" width="700px" length="400"></a>
 <br><br><br>
 </p>
 
@@ -21,6 +21,7 @@ git clone https://github.com/gnurt2041/Sun-Hackathon.git
 
 Install the requirements packages
 ```python
+cd ChatBot
 pip install -r requirements.txt
 ```
 
@@ -39,7 +40,6 @@ export INDEX_NAME = "YOUR_INDEX_NAME"
 Run app in local host
 
 ```python
-cd Chatbot
 python app.py
 ```
 
