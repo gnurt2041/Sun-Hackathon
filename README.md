@@ -1,8 +1,6 @@
 # JPT - Your Japanese chatbot teacher 
 <p align="center">
-<br><br><br>
 <img src="https://i.imgur.com/9Caf7yp.png" width="760px" length="400"></a>
-<br><br><br>
 </p>
 
 <p align="center">
